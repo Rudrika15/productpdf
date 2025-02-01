@@ -78,6 +78,8 @@ return view("admin.category.index", compact("categories"));
     {
         $category = category::find($id);
         $category->delete();
+
+        
         return redirect()->back()->with('message',"delete Successfully");
 
 

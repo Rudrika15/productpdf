@@ -12,21 +12,25 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function bulkcreate()
+    {
+        return view('admin.product.bulkcreate');
+    }
     public function index()
     {
-        $products =DB::table('categories')
-        ->crossJoin('products')
-        ->select('categories.name', 'products.*')
-        ->where('categories.id','=',DB::raw('products.category'))
-        ->get();
-        return view('admin.product.index',compact('products'));
+        $products = DB::table('categories')
+            ->crossJoin('products')
+            ->select('categories.name', 'products.*')
+            ->where('categories.id', '=', DB::raw('products.category'))
+            ->get();
+        return view('admin.product.index', compact('products'));
     }
 
     public function dashboard()
     {
-        $category =Category::count();
-        $product =Product::count();
-        return view('admin.dashboard.dashboard',compact('category','product'));
+        $category = Category::count();
+        $product = Product::count();
+        return view('admin.dashboard.dashboard', compact('category', 'product'));
     }
 
     /**
@@ -35,9 +39,8 @@ class ProductController extends Controller
     public function create()
     {
         //
-        $category =Category::all();
-        return view('admin.product.create',compact('category'));
-
+        $category = Category::all();
+        return view('admin.product.create', compact('category'));
     }
 
     /**
@@ -45,23 +48,38 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+
+
+        $request->validate([
+            'image' => 'required',
+            'image.*' => 'required|image|mimes:png,jpg,jpeg,webp',
+        ]);
+
+        $file = $request->file('image');
+        $filename = time() . "." . $file->getClientOriginalExtension();
+        $file->move(public_path('product'), $filename);
+
+
+
         $product = new Product();
         $product->modelno = $request->modelno;
-        $product->image = $request->image;
+        $product->image = $filename;
         $product->size = $request->size;
         $product->color = $request->color;
         $product->mrp = $request->mrp;
         $product->stock = $request->stock;
         $product->category = $request->category;
         $product->vendor = $request->vendor;
-        $product->sku = $request->sku;
+
 
         $product->save();
 
-        
 
-        return redirect()->back()->with('message',"store successfully");
+
+        return redirect()->back()->with('message', "store successfully");
     }
+
 
     /**
      * Display the specified resource.
@@ -77,7 +95,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $products = product::find($id);
-        return view('admin.product.edit',compact('products'));
+        return view('admin.product.edit', compact('products'));
     }
 
     /**
@@ -91,19 +109,24 @@ class ProductController extends Controller
         $product = product::find($id);
 
         $product->modelno = $request->modelno;
-        $product->image = $request->image;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . "." . $file->getClientOriginalExtension();
+            $file->move(public_path('product'), $filename);
+
+
+            $product->image = $filename;
+        }
         $product->size = $request->size;
         $product->color = $request->color;
         $product->mrp = $request->mrp;
         $product->stock = $request->stock;
         $product->category = $request->category;
         $product->vendor = $request->vendor;
-        $product->sku = $request->sku;
+
         $product->save();
 
-        return redirect()->back()->with('message',"update Successfully");
-
-
+        return redirect()->back()->with('message', "update Successfully");
     }
 
     /**
@@ -113,7 +136,6 @@ class ProductController extends Controller
     {
         $product = product::find($id);
         $product->delete();
-        return redirect()->back()->with('message',"delete Successfully");
-
+        return redirect()->back()->with('message', "delete Successfully");
     }
 }

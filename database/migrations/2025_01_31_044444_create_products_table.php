@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->integer('category');
             $table->string('vendor');
-            $table->string('sku');
+            
             $table->timestamps();
         });
     }

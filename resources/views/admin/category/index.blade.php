@@ -1,13 +1,14 @@
 @extends('admin.layouts.app')
+
+@section('title', 'Bassion || Category view')
 @section('content')
-
-
     <div class="container-fluid mt-3">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between  mb-3">
                     <div class="p-2 ">Category List</div>
-                    <div class="p-2"><a class="text-dark"href="{{route('category.create')}}" style="text-decoration: none" ><i class="bi bi-plus-circle-fill"></i> Add new category</a></div>
+                    <div class="p-2"><a class="text-dark"href="{{ route('category.create') }}"
+                            style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Add new category</a></div>
                 </div>
 
             </div>
@@ -30,15 +31,16 @@
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $data->name ?? '' }}</td>
                                 <td>
-                                    <a href={{route('category.edit',$data->id)}} class="bg-success p-2 text-white"> <i class="bi bi-pen-fill"></i></a>
+                                    <a href={{ route('category.edit', $data->id) }} class="bg-success p-2 text-white"> <i
+                                            class="bi bi-pen-fill"></i></a>
                                     {{-- <a  href={{route('product.destroy',$data->id)}} class="bg-danger p-2 text-white" ><i class="bi bi-trash-fill"></i></a> --}}
 
 
-                                    <a href="{{ route('category.destroy', $data->id) }}"
+                                    {{-- <a href="{{ route('category.destroy', $data->id) }}"
                                         class="bg-danger p-2 text-white"
                                         onclick="event.preventDefault();deleteProduct(this);">
                                         <i class="bi bi-trash-fill"></i>
-                                    </a>
+                                    </a> --}}
 
                                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                                     <script>
@@ -75,6 +77,6 @@
                     </tbody>
                 </table>
             </div>
-          </div>
+        </div>
     </div>
 @endsection

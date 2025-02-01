@@ -4,16 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>@yield('title')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('image/favicon.ico') }}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
+        .nav-link {
+            color: #255D6C !important;
+            font-weight: 900 !important;
+        }
+
+        .active {
+            color: #4CBED6 !important;
+        }
+
         .btn-primary {
             background-color: #255D6C !important;
             border: #255D6C !important;
 
 
+        }
+
+        a {
+            cursor: pointer !important;
         }
     </style>
 </head>
@@ -31,17 +45,24 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"
+                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" aria-current="page"
                             href="{{ route('dashboard') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('category.index') }}">category</a>
+                        <a class="nav-link {{ request()->routeIs('category.index','category.create','category.edit') ? 'active' : '' }}"
+                            href="{{ route('category.index') }}">Category</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('product.index') }}">Product</a>
+                        <a class="nav-link {{ request()->routeIs(['product.index', 'product.create', 'product.edit', 'product.bulkcreate']) ? 'active' : '' }}"
+                            href="{{ route('product.index') }}">Product</a>
                     </li>
-
+                    <li class="nav-item">
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="nav-link btn btn-link"
+                                style="border: none; background: none;">Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -56,7 +77,10 @@
     </div>
 
     <!-- Footer -->
-    <footer class="text-center text-lg-start bg-body-tertiary text-muted" style="bottom: 0 !important; position: fixed; width:100%;">
+    <div style="min-height: 170px"></div>
+
+
+    <footer class="text-center text-lg-start bg-body-tertiary text-muted">
 
         <!-- Section: Links  -->
 
@@ -66,7 +90,7 @@
                 $year = date('Y');
             @endphp
             © {{ $year }} Copyright:
-            <a class="text-reset fw-bold" href="#">Bassion</a>
+            <a class="text-reset fw-bold" href="https://bassinoimpex.com/" target="_blank">Bassion</a>
         </div>
         <!-- Copyright -->
     </footer>

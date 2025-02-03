@@ -19,14 +19,26 @@ class ProductController extends Controller
     {
         return view('admin.product.bulkcreate');
     }
-    public function index()
+    public function index(Request $req)
     {
-        $products = DB::table('categories')
-            ->crossJoin('products')
-            ->select('categories.name', 'products.*')
-            ->where('categories.id', '=', DB::raw('products.category'))
-            ->paginate(50);
-        return view('admin.product.index', compact('products'));
+        $category =  Category::all();
+
+
+        if ($req->category) {
+            $products = DB::table('categories')
+                ->crossJoin('products')
+                ->select('categories.name', 'products.*')
+                ->where('products.category', $req->category)
+                ->where('categories.id', '=', DB::raw('products.category'))
+                ->paginate(50);
+        } else {
+            $products = DB::table('categories')
+                ->crossJoin('products')
+                ->select('categories.name', 'products.*')
+                ->where('categories.id', '=', DB::raw('products.category'))
+                ->paginate(50);
+        }
+        return view('admin.product.index', compact('products', 'category'));
     }
 
     public function dashboard()

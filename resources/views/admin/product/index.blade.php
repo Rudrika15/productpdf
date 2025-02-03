@@ -4,18 +4,39 @@
 @section('content')
     <div class="container-fluid my-5">
         <div class="card">
-            <div class="card-header" style="background-color: white">
-                <div class="d-flex justify-content-between  mb-3">
-                    <div class="p-2 ">Product list</div>
-                    <div class="p-2"><a  class="btn btn-success"href="{{ route('product.create') }}"
-                            style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Add new product</a></div>
+            <div class="card-header d-flex justify-content-between" style="background-color: white">
+                <div class="mb-3">
+                    <h4>Product list</h4>
+                </div>
+                <div class="mb-3">
+                    <a class="btn btn-success"href="{{ route('product.create') }}" style="text-decoration: none"><i
+                            class="bi bi-plus-circle-fill"></i> Add new product</a>
+                    <div class="p-2"><a class="btn btn-success"href="{{ route('product.bulkcreate') }}"
+                            style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Import data</a></div>
+
                 </div>
 
             </div>
             <div class="card-body">
-                <div class="d-flex justify-content-end  mb-3">
-                    <div class="p-2"><a class="btn btn-success"href="{{ route('product.bulkcreate') }}"
-                            style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Import data</a></div>
+                <div class="my-2">
+                    <form action="{{ route('product.index') }}" method="get">
+                        @csrf
+                        <div class="row ">
+                            <div class="col-md-6">
+
+                                <select name='category' class="form-select" id='category'>
+                                    <option selected disabled>--Select Categoryp--</option>
+                                    @foreach ($category as $data)
+                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
                 <table class="table table-bordered table-hover justify-contenet-center">

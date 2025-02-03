@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LoginController;
 
+use App\Http\Controllers\UserController;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('login');
@@ -22,7 +24,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('product-edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('product-update', [ProductController::class, 'update'])->name('product.update');
     Route::get('product-destroy/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-    Route::get('bulk-product', [ProductController::class, 'bulkcreate'])->name('product.bulkcreate');
 
     // Route::get('/dashboard',[ProductController::class,'dashboard'])->name('dashboard');
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
@@ -33,4 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/category-destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::post('users/import', [ProductController::class, 'bulkImport'])->name('users.import');
+    Route::get('bulk-product', [ProductController::class, 'bulkcreate'])->name('product.bulkcreate');
 });

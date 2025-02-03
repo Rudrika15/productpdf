@@ -49,7 +49,7 @@
                             href="{{ route('dashboard') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('category.index','category.create','category.edit') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('category.index', 'category.create', 'category.edit') ? 'active' : '' }}"
                             href="{{ route('category.index') }}">Category</a>
                     </li>
                     <li class="nav-item">

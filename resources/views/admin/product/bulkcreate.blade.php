@@ -17,21 +17,17 @@
                 </div>
 
             </div>
+
             <div class="card-body">
-                <form action={{ route('product.store') }} method="post">
+                <form action={{ route('users.import') }} method="post" accept=".csv,.xl" enctype="multipart/form-data">
                     @csrf
 
 
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Sku</label>
-                        <input type="file" name="product" class="form-control" id="exampleInputPassword1">
+                        <label for="exampleInputPassword1" class="form-label">Vendorsku</label>
+                        <input type="file" name="file" class="form-control" id="exampleInputPassword1">
+
                     </div>
-
-
-
-
-
-
                     <button type="submit" class="btn btn-primary mb-5">Submit</button>
                 </form>
 

@@ -7,11 +7,14 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+
     public function bulkcreate()
     {
         return view('admin.product.bulkcreate');
@@ -22,7 +25,7 @@ class ProductController extends Controller
             ->crossJoin('products')
             ->select('categories.name', 'products.*')
             ->where('categories.id', '=', DB::raw('products.category'))
-            ->get();
+            ->paginate(50);
         return view('admin.product.index', compact('products'));
     }
 
@@ -137,5 +140,34 @@ class ProductController extends Controller
         $product = product::find($id);
         $product->delete();
         return redirect()->back()->with('message', "delete Successfully");
+    }
+
+    public function bulkImport(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx,xls|max:5240',
+        ]);
+
+
+        $file = $request->file('file');
+
+
+        $rows = array_map('str_getcsv', file($file));
+        // dd($rows);
+
+
+        foreach (array_slice($rows, 1) as $row) {  // Skip header row
+            Product::create([
+                'modelno' => $row[0],
+                'size' => $row[1],
+                'color' => $row[2],
+                'mrp' => $row[3],
+                'stock' => $row[4],
+                'category' => $row[5],
+                'vendorsku' => $row[6],
+            ]);
+        }
+
+        return redirect()->route('product.index')->with("message", 'Import successful');
     }
 }

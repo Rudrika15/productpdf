@@ -7,14 +7,14 @@
             <div class="card-header" style="background-color: white">
                 <div class="d-flex justify-content-between  mb-3">
                     <div class="p-2 ">Product list</div>
-                    <div class="p-2"><a class="text-dark"href="{{ route('product.create') }}"
+                    <div class="p-2"><a  class="btn btn-success"href="{{ route('product.create') }}"
                             style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Add new product</a></div>
                 </div>
 
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-end  mb-3">
-                    <div class="p-2"><a class="text-dark"href="{{ route('product.bulkcreate') }}"
+                    <div class="p-2"><a class="btn btn-success"href="{{ route('product.bulkcreate') }}"
                             style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Import data</a></div>
                 </div>
 
@@ -96,6 +96,7 @@
 
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-end">{{ $products->links() }} </div>
             </div>
         </div>
     </div>

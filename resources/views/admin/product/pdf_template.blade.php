@@ -44,7 +44,11 @@
             <tr>
                 <th>#</th>
                 <th>Model No</th>
-                <th>Price</th>
+                <th>Image</th>
+                <th>Size</th>
+                <th>color</th>
+
+                <th>mrp</th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +56,9 @@
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $product->modelno }}</td>
-                    <td>{{ $product->mrp }}</td>
+                    <td>{{ $product->image}}</td>
+                    <td>{{ $product->size }}</td>
+                    <td>{{ $product->color}}</td>
                 </tr>
             @endforeach
         </tbody>

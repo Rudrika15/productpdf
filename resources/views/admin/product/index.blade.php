@@ -64,7 +64,7 @@
                                 <td>{{ $data->modelno ?? '' }}</td>
                                 {{-- }} <td><img src="{{ asset('product/' . $data->image) }}" style="height: 200px"
                                         alt="{{ $data->image }}"></td> --}}
-                                <td> <a href="{{ $data->image }}" target="_blank">view image</a></td>
+                                <td> <img src="{{ $data->image }}" style="height:250px" /></td>
                                 <td>{{ $data->size ?? '' }}</td>
                                 <td>{{ $data->color ?? '' }}</td>
                                 <td>{{ $data->mrp ?? '' }}</td>

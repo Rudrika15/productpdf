@@ -31,7 +31,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Image</label>
-                            <input type="file" name="image" class="form-control" id="exampleInputPassword1">
+                            <input type="url"value="{{ $products->image }}"  name="image" class="form-control" id="exampleInputPassword1">
                         </div>
 
                         <div class="mb-3">
@@ -49,21 +49,27 @@
                             <input type="number" value="{{ $products->mrp }}"name="mrp" class="form-control"
                                 id="exampleInputPassword1">
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Stock</label>
-                            <input type="number" value="{{ $products->stock }}" name="stock"class="form-control"
-                                id="exampleInputPassword1">
-                        </div>
+                         <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Stock</label>
+                        <select name="stock" value="{{ $products->stock }}"class="form-select" id="exampleInputPassword1">
+                            <option value="yes">yes</option>
+                            <option value="no">no</option>
+                      </select>
+                    </div>
+
+
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">category</label>
                             <input type="text" value="{{ $products->category }}" name="category"class="form-control"
                                 id="exampleInputPassword1">
                         </div>
+                        {{--
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Vendorsku</label>
                             <input type="text"name="vendor" value="{{ $products->vendor }}"class="form-control"
                                 id="exampleInputPassword1">
                         </div>
+                        --}}
 
 
 

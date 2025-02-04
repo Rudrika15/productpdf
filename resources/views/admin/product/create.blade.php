@@ -29,13 +29,16 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="mb-3">
+
+
+                              <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
-                        <input type="file" name="image" class="form-control" id="exampleInputPassword1">
+                        <input type="url" class="form-control"name="image" id="exampleInputPassword1">
                         @error('image')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
 
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Size</label>
@@ -51,7 +54,10 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Stock</label>
-                        <input type="number" name="stock"class="form-control" id="exampleInputPassword1">
+                        <select name="stock" class="form-select" id="exampleInputPassword1">
+                            <option value="yes">yes</option>
+                            <option value="no">no</option>
+                      </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">category</label>
@@ -63,10 +69,10 @@
                         </select>
 
                     </div>
-                    <div class="mb-3">
+                   {{-- <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Vendorsku</label>
                         <input type="text"name="vendor" class="form-control" id="exampleInputPassword1">
-                    </div>
+                    </div>--}}
 
 
 

@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('size');
             $table->string('color');
             $table->integer('mrp');
-            $table->integer('stock');
+            $table->string('stock');
             $table->integer('category');
             $table->string('vendor');
-            
+
             $table->timestamps();
         });
     }

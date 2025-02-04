@@ -11,31 +11,30 @@
                 <div class="mb-3">
                     <a class="btn btn-success"href="{{ route('product.create') }}" style="text-decoration: none"><i
                             class="bi bi-plus-circle-fill"></i> Add new product</a>
-                    <div class="p-2"><a class="btn btn-success"href="{{ route('product.bulkcreate') }}"
-                            style="text-decoration: none"><i class="bi bi-plus-circle-fill"></i> Import data</a></div>
 
                 </div>
 
             </div>
             <div class="card-body">
                 <div class="my-2">
-                    <form action="{{ route('product.index') }}" method="get">
-                        @csrf
-                        <div class="row ">
-                            <div class="col-md-6">
-
+                    {{-- <form action="{{ route('product.index') }}" method="get">
+                        @csrf --}}
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <form action="{{ route('generate.pdf') }}" method="post">
+                                @csrf
                                 <select name='category' class="form-select" id='category'>
-                                    <option selected disabled>--Select Categoryp--</option>
+                                    <option selected disabled>--Select Category--</option>
                                     @foreach ($category as $data)
                                         <option value="{{ $data->id }}">{{ $data->name }}</option>
                                     @endforeach
-
                                 </select>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="submit" class="btn btn-success" />
-                            </div>
+
+                                <button type="submit" class="btn btn-primary mt-3">Download PDF</button>
+                            </form>
+                            {{-- <input type="submit" class="btn btn-success" /> --}}
                         </div>
+                    </div>
                     </form>
                 </div>
 
@@ -50,7 +49,7 @@
                             <th scope="col">Mrp</th>
                             <th scope="col">Stock</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Vendor sku</th>
+                            {{-- <th scope="col">Vendor sku</th> --}}
 
                             <th scope="col">Option</th>
                         </tr>
@@ -63,8 +62,9 @@
                             <tr>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $data->modelno ?? '' }}</td>
-                                <td><img src="{{ asset('product/' . $data->image) }}" style="height: 200px"
-                                        alt="{{ $data->image }}"></td>
+                                {{-- }} <td><img src="{{ asset('product/' . $data->image) }}" style="height: 200px"
+                                        alt="{{ $data->image }}"></td> --}}
+                                <td> <a href="{{ $data->image }}" target="_blank">view image</a></td>
                                 <td>{{ $data->size ?? '' }}</td>
                                 <td>{{ $data->color ?? '' }}</td>
                                 <td>{{ $data->mrp ?? '' }}</td>

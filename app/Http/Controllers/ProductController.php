@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -67,19 +68,20 @@ class ProductController extends Controller
 
 
         $request->validate([
-            'image' => 'required',
-            'image.*' => 'required|image|mimes:png,jpg,jpeg,webp',
+            'modelno' => 'required|unique:products,modelno',
+            'image' => 'required|url',
+
         ]);
 
-        $file = $request->file('image');
-        $filename = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path('product'), $filename);
+        // $file = $request->file('image');
+        // $filename = time() . "." . $file->getClientOriginalExtension();
+        // $file->move(public_path('product'), $filename);
 
 
 
         $product = new Product();
         $product->modelno = $request->modelno;
-        $product->image = $filename;
+        $product->image = $request->image;
         $product->size = $request->size;
         $product->color = $request->color;
         $product->mrp = $request->mrp;
@@ -124,14 +126,15 @@ class ProductController extends Controller
         $product = product::find($id);
 
         $product->modelno = $request->modelno;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . "." . $file->getClientOriginalExtension();
-            $file->move(public_path('product'), $filename);
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $filename = time() . "." . $file->getClientOriginalExtension();
+        //     $file->move(public_path('product'), $filename);
 
 
-            $product->image = $filename;
-        }
+        //     $product->image = $filename;
+        // }
+        $product->image = $request->image;
         $product->size = $request->size;
         $product->color = $request->color;
         $product->mrp = $request->mrp;
@@ -181,5 +184,27 @@ class ProductController extends Controller
         }
 
         return redirect()->route('product.index')->with("message", 'Import successful');
+    }
+
+
+    public function generatePDF(Request $request)
+    {
+
+        // Fetch category and its related products
+        $category = Category::findOrFail($request->category);
+        $products = Product::where('category', $request->category)->get();
+
+        // Prepare data for PDF
+        $data = [
+            'category_name' => $category->name,
+            'products' => $products,
+            'date' => now()->format('Y-m-d'),
+        ];
+
+        // Load Blade view into PDF
+        $pdf = Pdf::loadView('admin.product.pdf_template', $data);
+
+        // Return generated PDF for download
+        return $pdf->download('category_products.pdf');
     }
 }

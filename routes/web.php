@@ -24,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('product-edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('product-update', [ProductController::class, 'update'])->name('product.update');
     Route::get('product-destroy/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::post('/generate-pdf', [ProductController::class, 'generatePDF'])->name('generate.pdf');
+
 
     // Route::get('/dashboard',[ProductController::class,'dashboard'])->name('dashboard');
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');

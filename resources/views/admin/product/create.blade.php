@@ -31,7 +31,7 @@
                     </div>
 
 
-                              <div class="mb-3">
+                    <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
                         <input type="url" class="form-control"name="image" id="exampleInputPassword1">
                         @error('image')
@@ -50,14 +50,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Mrp</label>
-                        <input type="number" name="mrp" class="form-control" id="exampleInputPassword1">
+                        <input type="number" min="0" name="mrp" class="form-control" id="exampleInputPassword1">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Stock</label>
-                        <select name="stock" class="form-select" id="exampleInputPassword1">
-                            <option value="yes">yes</option>
-                            <option value="no">no</option>
-                      </select>
+                        <input type="number" min="0" name="stock" class="form-control" id="exampleInputPassword1">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">category</label>
@@ -65,23 +62,15 @@
                             @foreach ($category as $data)
                                 <option value="{{ $data->id }}">{{ $data->name }}</option>
                             @endforeach
-
                         </select>
-
                     </div>
-                   {{-- <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Vendorsku</label>
                         <input type="text"name="vendor" class="form-control" id="exampleInputPassword1">
-                    </div>--}}
-
-
-
-
-
+                    </div> --}}
 
                     <button type="submit" class="btn btn-primary mb-5">Submit</button>
                 </form>
-
             </div>
         </div>
     </div>

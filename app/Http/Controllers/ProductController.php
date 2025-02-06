@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductExport;
 use App\Models\Product;
 use App\Models\Category;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -189,6 +190,11 @@ class ProductController extends Controller
 
     public function generatePDF(Request $request)
     {
+        ini_set('max_execution_time', 0);
+        $request->validate([
+            'category' => 'required',
+            'type' => 'required',
+        ]);
 
         // Fetch category and its related products
         $category = Category::findOrFail($request->category);
@@ -201,10 +207,14 @@ class ProductController extends Controller
             'date' => now()->format('Y-m-d'),
         ];
 
-        // Load Blade view into PDF
-        $pdf = Pdf::loadView('admin.product.pdf_template', $data);
+        if ($request->type == 'pdf') {
 
-        // Return generated PDF for download
-        return $pdf->download('category_products.pdf');
+            $pdf = Pdf::loadView('admin.product.pdf_template', $data);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+
+            return $pdf->download('category_products.pdf');
+        } else {
+            return Excel::download(new ProductExport($request), 'category_products.xlsx');
+        }
     }
 }

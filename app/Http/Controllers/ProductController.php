@@ -164,28 +164,36 @@ class ProductController extends Controller
             'file' => 'required|mimes:csv,xlsx,xls|max:5240',
         ]);
 
-
+        // Load file correctly
         $file = $request->file('file');
 
+        // Convert the file into an array using Laravel's Excel package
+        $rows = Excel::toArray([], $file)[0]; // Get the first sheet
 
-        $rows = array_map('str_getcsv', file($file));
-        // dd($rows);
+        if (empty($rows) || count($rows[0]) < 6) {
+            return redirect()->route('product.index')->with("error", 'Invalid file format.');
+        }
 
-
-        foreach (array_slice($rows, 1) as $row) {  // Skip header row
+        // Skip header row and import the data
+        foreach (array_slice($rows, 1) as $row) {
+            if (!isset($row[0])) continue; // Skip empty rows
+            // dd($row);
             Product::create([
                 'modelno' => $row[0],
                 'size' => $row[1],
                 'color' => $row[2],
-                'mrp' => $row[3],
-                'stock' => $row[4],
-                'category' => $row[5],
-                'vendorsku' => $row[6],
+                'mrp' => (int) ($row[3]),
+                'category' => is_numeric($row[4]) ? (int) $row[4] : 1, // Ensure category is integer
+                'vendorsku' => $row[5],
+                'image' => isset($row[6]) && !empty($row[6]) ? trim($row[6]) : null, // Trim to remove spaces
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
         return redirect()->route('product.index')->with("message", 'Import successful');
     }
+
 
 
     public function generatePDF(Request $request)

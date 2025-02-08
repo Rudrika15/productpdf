@@ -38,5 +38,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::post('users/import', [ProductController::class, 'bulkImport'])->name('users.import');
-    Route::get('bulk-product', [ProductController::class, 'bulkcreate'])->name('product.bulkcreate');
+    Route::get('bulk-product/{id}', [ProductController::class, 'bulkcreate'])->name('product.bulkcreate');
 });

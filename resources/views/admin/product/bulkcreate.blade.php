@@ -28,6 +28,7 @@
                         <input type="file" name="file" class="form-control" id="exampleInputPassword1">
 
                     </div>
+                    <input type="hidden" name="category_id" value="{{ $category->id }}">
                     <button type="submit" class="btn btn-primary mb-5">Submit</button>
                 </form>
 

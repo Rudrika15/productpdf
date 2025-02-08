@@ -17,9 +17,11 @@ class ProductController extends Controller
      */
 
 
-    public function bulkcreate()
+    public function bulkcreate($id)
     {
-        return view('admin.product.bulkcreate');
+
+        $category = Category::find($id);
+        return view('admin.product.bulkcreate', compact('category'));
     }
     public function index(Request $req)
     {
@@ -113,7 +115,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         $products = product::find($id);
-        return view('admin.product.edit', compact('products'));
+        $category = Category::all();
+        return view('admin.product.edit', compact('products', 'category'));
     }
 
     /**
@@ -183,7 +186,7 @@ class ProductController extends Controller
                 'size' => $row[1],
                 'color' => $row[2],
                 'mrp' => (int) ($row[3]),
-                'category' => is_numeric($row[4]) ? (int) $row[4] : 1, // Ensure category is integer
+                'category' => $request->category_id, // Ensure category is integer
                 'vendorsku' => $row[5],
                 'image' => isset($row[6]) && !empty($row[6]) ? trim($row[6]) : null, // Trim to remove spaces
                 'created_at' => now(),

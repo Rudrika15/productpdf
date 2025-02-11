@@ -60,8 +60,13 @@
 
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">category</label>
-                            <input type="text" value="{{ $products->category }}" name="category"class="form-control"
-                                id="exampleInputPassword1">
+                            <select name="category" class="form-select" id="">
+                                @foreach ($category as $data)
+                                    <option value="{{ $data->id }}"
+                                        {{ $products->category == $data->id ? 'selected' : '' }}>{{ $data->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         {{--
                         <div class="mb-3">
@@ -70,10 +75,6 @@
                                 id="exampleInputPassword1">
                         </div>
                         --}}
-
-
-
-
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductExport;
 use App\Models\Product;
 use App\Models\Category;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -16,9 +17,11 @@ class ProductController extends Controller
      */
 
 
-    public function bulkcreate()
+    public function bulkcreate($id)
     {
-        return view('admin.product.bulkcreate');
+
+        $category = Category::find($id);
+        return view('admin.product.bulkcreate', compact('category'));
     }
     public function index(Request $req)
     {
@@ -163,23 +166,30 @@ class ProductController extends Controller
             'file' => 'required|mimes:csv,xlsx,xls|max:5240',
         ]);
 
-
+        // Load file correctly
         $file = $request->file('file');
 
+        // Convert the file into an array using Laravel's Excel package
+        $rows = Excel::toArray([], $file)[0]; // Get the first sheet
 
-        $rows = array_map('str_getcsv', file($file));
-        // dd($rows);
+        if (empty($rows) || count($rows[0]) < 6) {
+            return redirect()->route('product.index')->with("error", 'Invalid file format.');
+        }
 
-
-        foreach (array_slice($rows, 1) as $row) {  // Skip header row
+        // Skip header row and import the data
+        foreach (array_slice($rows, 1) as $row) {
+            if (!isset($row[0])) continue; // Skip empty rows
+            // dd($row);
             Product::create([
                 'modelno' => $row[0],
                 'size' => $row[1],
                 'color' => $row[2],
-                'mrp' => $row[3],
-                'stock' => $row[4],
-                'category' => $row[5],
-                'vendorsku' => $row[6],
+                'mrp' => (int) ($row[3]),
+                'category' => $request->category_id, // Ensure category is integer
+                'vendorsku' => $row[5],
+                'image' => isset($row[6]) && !empty($row[6]) ? trim($row[6]) : null, // Trim to remove spaces
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -187,8 +197,14 @@ class ProductController extends Controller
     }
 
 
+
     public function generatePDF(Request $request)
     {
+        ini_set('max_execution_time', 0);
+        $request->validate([
+            'category' => 'required',
+            'type' => 'required',
+        ]);
 
         // Fetch category and its related products
         $category = Category::findOrFail($request->category);
@@ -201,10 +217,14 @@ class ProductController extends Controller
             'date' => now()->format('Y-m-d'),
         ];
 
-        // Load Blade view into PDF
-        $pdf = Pdf::loadView('admin.product.pdf_template', $data);
+        if ($request->type == 'pdf') {
 
-        // Return generated PDF for download
-        return $pdf->download('category_products.pdf');
+            $pdf = Pdf::loadView('admin.product.pdf_template', $data);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+
+            return $pdf->download('category_products.pdf');
+        } else {
+            return Excel::download(new ProductExport($request), 'category_products.xlsx');
+        }
     }
 }

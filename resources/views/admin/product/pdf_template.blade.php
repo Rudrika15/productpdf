@@ -56,9 +56,13 @@
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $product->modelno }}</td>
-                    <td>{{ $product->image}}</td>
+                    <td>
+                        <img src="{{ $product->image }}" alt="Product Image"
+                            style="max-width: 100px ; max-height: 100px; object-fit: contain">
+                    </td>
                     <td>{{ $product->size }}</td>
-                    <td>{{ $product->color}}</td>
+                    <td>{{ $product->color }}</td>
+                    <td>{{ $product->mrp }}</td>
                 </tr>
             @endforeach
         </tbody>

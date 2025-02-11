@@ -23,14 +23,20 @@
                         <div class="col-md-6">
                             <form action="{{ route('generate.pdf') }}" method="post">
                                 @csrf
-                                <select name='category' class="form-select" id='category'>
+                                <select name="category" class="form-select" id="category">
                                     <option selected disabled>--Select Category--</option>
                                     @foreach ($category as $data)
                                         <option value="{{ $data->id }}">{{ $data->name }}</option>
                                     @endforeach
                                 </select>
 
-                                <button type="submit" class="btn btn-primary mt-3">Download PDF</button>
+                                <select name="type" class="form-select mt-2" id="">
+                                    <option selected disabled>--Select Type--</option>
+                                    <option value="pdf">PDF</option>
+                                    <option value="excel">Excel</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-primary mt-3">Download </button>
                             </form>
                             {{-- <input type="submit" class="btn btn-success" /> --}}
                         </div>
@@ -62,9 +68,11 @@
                             <tr>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $data->modelno ?? '' }}</td>
-                                {{-- }} <td><img src="{{ asset('product/' . $data->image) }}" style="height: 200px"
+                                {{-- <td><img src="{{ asset('product/' . $data->image) }}" style="height: 200px"
                                         alt="{{ $data->image }}"></td> --}}
-                                <td> <img src="{{ $data->image }}" style="height:250px" /></td>
+                                <td>
+                                    <img src="{{ $data->image }}" style="height:250px" />
+                                </td>
                                 <td>{{ $data->size ?? '' }}</td>
                                 <td>{{ $data->color ?? '' }}</td>
                                 <td>{{ $data->mrp ?? '' }}</td>

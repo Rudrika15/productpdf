@@ -3,10 +3,6 @@
 @section('title', 'Bassion || Category create')
 @section('content')
 
-
-
-
-
     @if (Session::has('message'))
         <div class="alert alert-success">
             {{ Session::get('message') }}

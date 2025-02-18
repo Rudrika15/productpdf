@@ -57,6 +57,12 @@
                             href="{{ route('product.index') }}">Product</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('change-password') ? 'active' : ') ?>' }}"
+                            href="{{ route('change.password') }}">ChangePassword</a>
+                    </li>
+
+
+                    <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
                             <button type="submit" class="nav-link btn btn-link"

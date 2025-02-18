@@ -39,4 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('users/import', [ProductController::class, 'bulkImport'])->name('users.import');
     Route::get('bulk-product/{id}', [ProductController::class, 'bulkcreate'])->name('product.bulkcreate');
+
+    Route::get('changePassword', [LoginController::class, 'changePassword'])->name('change.password');
+    Route::post('updatePassword', [LoginController::class, 'updatePassword'])->name('update.password');
 });

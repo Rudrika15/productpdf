@@ -44,4 +44,35 @@ class LoginController extends Controller
         // Redirect the user to the login page
         return redirect()->route('login');
     }
+
+    public function changePassword()
+    {
+
+        return view('admin.changePassword');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validate the input fields
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed',
+        ]);
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the current password matches the user's password
+        if (!Hash::check($request->current_password, $user->password)) {
+            // Return back with an error message if the current password is incorrect
+            return back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Return back with a success message
+        return back()->with('message', 'Password updated successfully.');
+    }
 }
